@@ -4,7 +4,11 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-
+<?php
+    session_start();
+    $form_token = md5(uniqid('auth, true'));
+    $_SESSION['form_token'] = $form_token;
+?>
 
 <html>
     <head>
@@ -37,13 +41,13 @@ and open the template in the editor.
                 </div>
         
              <div id="content">
-                <form action="#" method='post'>
+                <form action="#">
                           <label>Användarnamn:</label>
                           <input type="text" placeholder="Enter Username" name="tasty_username" required maxlength="20" /> <br />
 
                           <label>Lösenord:</label>
                           <input type="password" placeholder="Enter Password" name="tasty_password" required maxlength="40" />
-                          <!--<input type="hidden" name="form_token" value="<?php echo $form_token; />-->
+                          <input type="hidden" name="form_token" value="<?php echo $form_token; ?>" />
                           <input type="submit" value="Logga in" />
                           <!--
                           <input type="checkbox" checked="checked"> Remember me
@@ -63,3 +67,4 @@ and open the template in the editor.
     
     </body>
 </html>
+
