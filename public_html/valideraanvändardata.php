@@ -2,13 +2,14 @@
 /*start session för skapa tillstånd mellan klient och server*/
 session_start();
 /*kollar att lösen och användarnamn är satta via form*/
-if(!isset( $_POST['tasty_username'], $_POST['tasty_password'], $_POST['form_token'])) {
+if(!isset( $_POST['tasty_username'], $_POST['tasty_password'])) {
     $message = 'Skriv giltigt användarenamn och lösenord';
 }
-/*kollar att form_token är den rätta*/
+/*kollar att form_token är den rätta
 elseif( $_POST['form_token'] != $_SESSION['form_token']) {
     $message = 'Felaktig form format';
-}
+}*/
+
 /*kollar att antal tecken i användarnamn inte överskrider antal tecken i databasen.*/
 elseif (strlen( $_POST['tasty_username']) > 20 || strlen($_POST['tasty_username']) < 4) {
     $message = 'Fel antal tecken';
@@ -35,7 +36,7 @@ else {
     $mysql_hostname = 'localhost';
     $mysql_username = 'root';
     $mysql_password = 'admin';
-    $mysql_dbname = 'tastyrecipe';
+    $mysql_dbname = 'tastyrecipes';
 
     try {
         /*objekt med konstruktor som samlar och förbereder databasuppkoppling*/
@@ -46,13 +47,13 @@ else {
 
         $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         /*göra iordning sql för insättning i tabell i databasen*/
-        $stmt = $dbh->prepare("INSERT INTO tasty_users (tasty_username, tasty_password ) VALUES (:tasty_username, :tasty_password )");/*** bind the parameters ***/
+        $stmt = $dbh->prepare("INSERT INTO tasty_users (tasty_username, tasty_password ) VALUES (:tasty_username, :tasty_password )");
         $stmt->bindParam(':tasty_username', $tasty_username, PDO::PARAM_STR);
         $stmt->bindParam(':tasty_password', $tasty_password, PDO::PARAM_STR, 40);
         /*exekvera sql*/
         $stmt->execute();/*** unset the form token session variable ***/
         /*förstör form_token variabeln, vi är färdiga med dem*/
-        unset( $_SESSION['form_token'] );
+       /* unset( $_SESSION['form_token'] ); */
         /*Meddelande till användaren att det har lyckats*/
         $message = 'Ny användare har lagts till!';
     }
